@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "510260201709",
+    "project_id": "bloodpal-90c88",
+    "storage_bucket": "bloodpal-90c88.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:510260201709:android:da4ca653e438b9991724e4",
+        "android_client_info": {
+          "package_name": "com.example.blood_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApZtL3lDN_QIGI7x1Sz1WPDa7ZGeHKsLg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
