@@ -19,8 +19,11 @@ class AuthenticationBloc
       add(AuthenticationUserChanged(user: user));
     });
     on<AuthenticationUserChanged>((event, emit) {
+
       if (event.user != null) {
+      //  print(event.user);
         emit(AuthenticationState.authenticated(event.user!));
+
       } else {
         emit(AuthenticationState.unauthenticated());
       }

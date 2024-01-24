@@ -12,23 +12,27 @@ part 'my_user_event.dart';
 part 'my_user_state.dart';
 
 class MyUserBloc extends Bloc<MyUserEvent, MyUserState> {
- // MyUser dummyuser= MyUser(userId: '5', email: 'email', name: 'name');
-  final UserRepositiory _userRepositiory;
-  MyUserBloc({required UserRepositiory myUserRepositiory})
-      : _userRepositiory = myUserRepositiory,
-        super(MyUserState.loading()) {
-    print('entered loading');
+  // MyUser dummyuser= MyUser(userId: '5', email: 'email', name: 'name');
+  final UserRepositiory userRepositiory;
+  MyUserBloc({required this.userRepositiory})
+      : super(const MyUserState.loading())
+
+   {
+   // print('entered loading state');
     on<GetMyUser>((event, emit) async {
+     // print('on get user event');
+     // print(event);
       try {
-        print('fgjhdf');
-        MyUser myuser = await _userRepositiory.getMyUser(event.myUserId);
-        print(myuser);
+        //print('entered try statement');
+        //print(event.myUserId);
+        MyUser myuser = await userRepositiory.getMyUser(event.myUserId);
+        //print(myuser);
         emit(MyUserState.success(myuser));
       } catch (e) {
-      print(e.toString());
+        print(e.toString());
         log(e.toString());
         emit(MyUserState.failure());
-       print('entered failure');
+        print('entered failure');
       }
     });
   }

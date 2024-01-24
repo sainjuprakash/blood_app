@@ -62,7 +62,7 @@ class FirebaseUserRepo implements UserRepositiory {
   @override
   Future<MyUser> getMyUser(String myUserId) async {
     try {
-      return userCollection.doc(myUserId).get().then((value) =>
+      return await userCollection.doc(myUserId).get().then((value) =>
           MyUser.fromEntity(MyUserEntity.fromDocument(value.data()!)));
 
     } catch (e) {

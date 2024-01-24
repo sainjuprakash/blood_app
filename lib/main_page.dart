@@ -23,7 +23,6 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-
   @override
   void initState() {
     // String users = context.read<AuthenticationBloc>().state.user!.uid;
@@ -35,7 +34,8 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => MyUserBloc(myUserRepositiory: FirebaseUserRepo()),
+      create: (context) => MyUserBloc(userRepositiory: FirebaseUserRepo()),
+      //..add(const GetMyUser(myUserId: '11')),
       child: Scaffold(
 // floatingActionButton: FloatingActionButton(
 //   onPressed: () {
@@ -69,62 +69,74 @@ class _MainPageState extends State<MainPage> {
           backgroundColor: Colors.red,
           title: Text('blood app'),
         ),
-        drawer: BlocBuilder<MyUserBloc, MyUserState>(
-    builder: (context, state) {
-      return Drawer(
-        backgroundColor: Colors.red.withOpacity(0.5),
-        width: MediaQuery.of(context).size.width / 1.42,
-        child: ListView(
-          children: [
-            ListTile(
-              leading: Icon(CupertinoIcons.add),
-              title: Text('Request blood'),
-              onTap: () {
-
-                log('Request button ');
-                Navigator.push(
-                  context,
-                  MaterialPageRoute<void>(
-                    builder: (BuildContext context) =>
-                        BlocProvider<RequestBloodBloc>(
-                          create: (context) => RequestBloodBloc(
-                              bloodRequestRepository:
-                              FirebasePostRepository()),
-// child: RequestBloodPage(myUser: state.user!,),
-                          child: RequestBloodPage(myUser: state.user!,),
+        drawer: BlocConsumer<MyUserBloc, MyUserState>(
+          listener: (context, state) {
+            //print('Listener block');
+            if (state.status == MyUserStatus.success) {
+              Navigator.push(
+                context,
+                MaterialPageRoute<void>(
+                  builder: (BuildContext context) =>
+                      BlocProvider<RequestBloodBloc>(
+                        create: (context) => RequestBloodBloc(
+                            bloodRequestRepository:
+                            FirebasePostRepository()),
+                        child: RequestBloodPage(
+                          myUser: state.user!,
                         ),
+                      ),
+                ),
+              );
+            }
+            else if (state.status == MyUserStatus.failure) {
+              print('Myuser state failure');
+              return;
+            } else if (state.status == MyUserStatus.loading) {
+              print('loading');
+              // context.read<MyUserBloc>().add(GetMyUser(myUserId: 'id1bxMyvBTfQYVi5nLS2tIasUmi1'));
+            } else {
+              return;
+            }
+            // if (state == MyUserState.loading()) {
+            //   context
+            //       .read<MyUserBloc>()
+            //       .add(GetMyUser(myUserId: 'id1bxMyvBTfQYVi5nLS2tIasUmi1'));
+            // }
+          },
+          builder: (context, state) {
+            return Drawer(
+              backgroundColor: Colors.red.withOpacity(0.5),
+              width: MediaQuery.of(context).size.width / 1.42,
+              child: ListView(
+                children: [
+                  ListTile(
+                    leading: Icon(CupertinoIcons.add),
+                    title: Text('Request blood'),
+                    onTap: () {
+                      context.read<MyUserBloc>().add( GetMyUser(
+                          myUserId: context.read<AuthenticationBloc>().state.user!.uid));
+
+                     // print(context.read<AuthenticationBloc>().state.user);
+
+                    },
                   ),
-                );
-// else if (state.status == MyUserStatus.failure) {
-//   print('Myuser state failure');
-//   return;
-// } else if (state.status == MyUserStatus.loading) {
-//   print('loading');
-// } else {
-//   return;
-// }
-                    ;
-              },
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            ListTile(
-              leading: Icon(Icons.login),
-              title: Text('Log Out'),
-              onTap: () {
-                context.read<SignInBloc>().add(SignOutRequired());
-              },
-            ),
-          ],
-        ),
-      );
-    },
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.login),
+                    title: Text('Log Out'),
+                    onTap: () {
+                      context.read<SignInBloc>().add(SignOutRequired());
+                    },
+                  ),
+                ],
+              ),
+            );
+          },
         ),
         body: Container(),
       ),
     );
   }
 }
-
-

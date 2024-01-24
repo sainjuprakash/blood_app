@@ -27,7 +27,10 @@ class _MyAppViewState extends State<MyAppView> {
       title: 'Firebase Auth',
       home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
         builder: (context, state) {
+         // print(state.Status);
+
           if (state.Status == AuthenticationStatus.authenticated) {
+            //print(state.user!.uid);
             return MultiBlocProvider(
               providers: [
                 BlocProvider(
@@ -35,14 +38,14 @@ class _MyAppViewState extends State<MyAppView> {
                       userRepository:
                           context.read<AuthenticationBloc>().userRepostitory),
                 ),
-                BlocProvider(
-                  create: (context) => MyUserBloc(
-                      myUserRepositiory:
-                          context.read<AuthenticationBloc>().userRepostitory)
-                    ..add(GetMyUser(
-                        myUserId: context
-                            .read<AuthenticationBloc>().state.user!.uid)),
-                ),
+                // BlocProvider(
+                //   create: (context) => MyUserBloc(
+                //       userRepositiory:
+                //           context.read<AuthenticationBloc>().userRepostitory
+                //   )
+                //     // ..add(GetMyUser(
+                //     //     myUserId: context.read<AuthenticationBloc>().state.user!.uid)),
+                // ),
               ],
               child:  const MainPage(),
             );

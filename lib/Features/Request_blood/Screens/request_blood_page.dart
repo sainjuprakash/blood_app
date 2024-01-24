@@ -14,7 +14,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RequestBloodPage extends StatefulWidget {
   final MyUser myUser;
-  const RequestBloodPage( {required this.myUser,super.key});
+  const RequestBloodPage({required this.myUser, super.key});
 
   @override
   State<RequestBloodPage> createState() => _RequestBloodPageState();
@@ -34,20 +34,20 @@ class _RequestBloodPageState extends State<RequestBloodPage> {
 
   @override
   void initState() {
+    print(widget.myUser);
     blood = RequestBlood.empty;
-   //blood.user = widget.;
-   // blood.user=context.read().state.user!;
+    blood.user = widget.myUser;
+    // blood.user=context.read().state.user!;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-   // log(blood.toString() as num);
+    // log(blood.toString() as num);
     print(blood);
     return BlocListener<RequestBloodBloc, RequestBloodState>(
       listener: (context, state) {},
       child: Scaffold(
-
           backgroundColor: Colors.deepOrange.withOpacity(0.5),
           body: SingleChildScrollView(
             child: Form(
