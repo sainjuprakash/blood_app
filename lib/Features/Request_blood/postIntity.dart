@@ -10,6 +10,7 @@ class PostIntity extends Equatable {
   String purpose;
   String bloodgroup;
   int pins;
+  int contact;
   String location;
   String dateofrequire;
   DateTime createdAt;
@@ -22,6 +23,7 @@ class PostIntity extends Equatable {
       required this.purpose,
       required this.bloodgroup,
       required this.pins,
+        required this.contact,
       required this.location,
       required this.dateofrequire,
       required this.createdAt,
@@ -35,6 +37,7 @@ class PostIntity extends Equatable {
       'purpose': purpose,
       'bloodgroup': bloodgroup,
       'pins': pins,
+      'contact' : contact,
       'location': location,
       'dateofrequire': dateofrequire,
       'createdAt': createdAt,
@@ -50,6 +53,7 @@ class PostIntity extends Equatable {
         purpose: doc['purpose'],
         bloodgroup: doc['bloodgroup'],
         pins: doc['pins'],
+        contact: doc['contact'],
         location: doc['location'],
         dateofrequire: doc['dateofrequire'],
         createdAt: DateTime.parse(doc['createdAt']),

@@ -12,6 +12,7 @@ class RequestBlood extends Equatable {
   String purpose;
   String bloodgroup;
   int pins;
+  int contact;
   String location;
   String dateofrequire;
   DateTime createdAt;
@@ -24,6 +25,7 @@ class RequestBlood extends Equatable {
       required this.purpose,
       required this.bloodgroup,
       required this.pins,
+        required this.contact,
       required this.location,
       required this.dateofrequire,
       required this.createdAt,
@@ -36,6 +38,7 @@ class RequestBlood extends Equatable {
       purpose: '',
       bloodgroup: '',
       pins: 0,
+      contact: 0,
       location: '',
       dateofrequire: '',
       createdAt: DateTime.now(),
@@ -48,6 +51,7 @@ class RequestBlood extends Equatable {
     String? purpose,
     String? bloodgroup,
     int? pins,
+    int? contact,
     String? location,
     String? dateofrequire,
     String? details,
@@ -61,6 +65,7 @@ class RequestBlood extends Equatable {
         purpose: purpose ?? this.purpose,
         bloodgroup: bloodgroup ?? this.bloodgroup,
         pins: pins ?? this.pins,
+        contact: contact ?? this.contact,
         location: location ?? this.location,
         dateofrequire: dateofrequire ?? this.dateofrequire,
         createdAt: createdAt ?? this.createdAt,
@@ -75,6 +80,7 @@ class RequestBlood extends Equatable {
         purpose: purpose,
         bloodgroup: bloodgroup,
         pins: pins,
+        contact: contact,
         location: location,
         dateofrequire: dateofrequire,
         createdAt: createdAt,
@@ -89,6 +95,7 @@ class RequestBlood extends Equatable {
         purpose: postIntity.purpose,
         bloodgroup: postIntity.bloodgroup,
         pins: postIntity.pins,
+        contact: postIntity.contact,
         location: postIntity.location,
         dateofrequire: postIntity.dateofrequire,
         createdAt: postIntity.createdAt,

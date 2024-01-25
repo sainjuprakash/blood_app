@@ -25,7 +25,7 @@ class RequestBloodPage extends StatefulWidget {
 class _RequestBloodPageState extends State<RequestBloodPage> {
   late RequestBlood createdblood;
   final _formKey = GlobalKey<FormState>();
-  //TextEditingController _nameController = TextEditingController();
+  TextEditingController _contactController = TextEditingController();
   TextEditingController _patientController = TextEditingController();
   TextEditingController _locationController = TextEditingController();
   TextEditingController _dorController = TextEditingController();
@@ -80,17 +80,7 @@ class _RequestBloodPageState extends State<RequestBloodPage> {
                         const EdgeInsets.only(top: 100.0, left: 10, right: 10),
                     child: Column(
                       children: [
-                        // MyTextField(
-                        //     controller: _nameController,
-                        //     validator: (name) {
-                        //       if (name!.isEmpty) {
-                        //         return 'Please enter the name';
-                        //       }
-                        //       return null;
-                        //     },
-                        //     hintText: 'name',
-                        //     obsecureText: false,
-                        //     keyboardType: TextInputType.text),
+
                         const SizedBox(
                           height: 10,
                         ),
@@ -174,6 +164,25 @@ class _RequestBloodPageState extends State<RequestBloodPage> {
                             obsecureText: false,
                             keyboardType: TextInputType.text),
                         const SizedBox(
+                          height: 10,
+                        ),
+                        MyTextField(
+                            controller: _contactController,
+                            validator: (contact) {
+                              if (contact!.isEmpty) {
+                                return 'Please enter your contact number';
+                              } if(contact.length != 10){
+                                return 'enter valid contact number';
+                              }
+                              if(!RegExp(r'(^(?:[+0]9)?[0-9]{10,12}$)').hasMatch(contact)){
+                                return 'contact is not from nepal';
+                              }
+                              return null;
+                            },
+                            hintText: 'contact number',
+                            obsecureText: false,
+                            keyboardType: TextInputType.text),
+                        const SizedBox(
                           height: 20,
                         ),
                         !request
@@ -181,7 +190,7 @@ class _RequestBloodPageState extends State<RequestBloodPage> {
                                 width: MediaQuery.of(context).size.width * 0.5,
                                 child: TextButton(
                                     onPressed: () {
-                                     // FocusScope.of(context).unfocus();
+                                      // FocusScope.of(context).unfocus();
                                       if (_formKey.currentState!.validate()) {
                                         setState(() {
                                           // createdblood.fullname =
@@ -198,11 +207,10 @@ class _RequestBloodPageState extends State<RequestBloodPage> {
                                               _locationController.text;
                                           createdblood.dateofrequire =
                                               _dorController.text;
-
+                                          createdblood.contact= int.parse(_contactController.text);
                                         });
-                                        context
-                                            .read<RequestBloodBloc>()
-                                            .add(bloodRequestDone(createdblood));
+                                        context.read<RequestBloodBloc>().add(
+                                            bloodRequestDone(createdblood));
                                       }
                                     },
                                     style: TextButton.styleFrom(
