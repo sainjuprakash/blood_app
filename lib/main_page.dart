@@ -23,13 +23,13 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  @override
-  void initState() {
-    // String users = context.read<AuthenticationBloc>().state.user!.uid;
-    // print(users);
-    // TODO: implement initState
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   String users = context.read<AuthenticationBloc>().state.user!.uid;
+  //   print(users);
+  //   print('--------------------');
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -78,17 +78,15 @@ class _MainPageState extends State<MainPage> {
                 MaterialPageRoute<void>(
                   builder: (BuildContext context) =>
                       BlocProvider<RequestBloodBloc>(
-                        create: (context) => RequestBloodBloc(
-                            bloodRequestRepository:
-                            FirebasePostRepository()),
-                        child: RequestBloodPage(
-                          myUser: state.user!,
-                        ),
-                      ),
+                    create: (context) => RequestBloodBloc(
+                        bloodRequestRepository: FirebasePostRepository()),
+                    child: RequestBloodPage(
+                      myUser: state.user!,
+                    ),
+                  ),
                 ),
               );
-            }
-            else if (state.status == MyUserStatus.failure) {
+            } else if (state.status == MyUserStatus.failure) {
               print('Myuser state failure');
               return;
             } else if (state.status == MyUserStatus.loading) {
@@ -105,7 +103,7 @@ class _MainPageState extends State<MainPage> {
           },
           builder: (context, state) {
             return Drawer(
-              backgroundColor: Colors.red.withOpacity(0.5),
+              backgroundColor: Colors.red,
               width: MediaQuery.of(context).size.width / 1.42,
               child: ListView(
                 children: [
@@ -113,11 +111,15 @@ class _MainPageState extends State<MainPage> {
                     leading: Icon(CupertinoIcons.add),
                     title: Text('Request blood'),
                     onTap: () {
-                      context.read<MyUserBloc>().add( GetMyUser(
-                          myUserId: context.read<AuthenticationBloc>().state.user!.uid));
+                      //if (state.status == MyUserStatus.success) {}
+                      context.read<MyUserBloc>().add(GetMyUser(
+                          myUserId: context
+                              .read<AuthenticationBloc>()
+                              .state
+                              .user!
+                              .uid));
 
-                     // print(context.read<AuthenticationBloc>().state.user);
-
+                      // print(context.read<AuthenticationBloc>().state.user);
                     },
                   ),
                   const SizedBox(
