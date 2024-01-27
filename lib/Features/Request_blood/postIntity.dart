@@ -1,4 +1,5 @@
 import 'package:blood_app/Features/Login/entities/enteties.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
 import '../Login/model/user_model.dart';
@@ -56,7 +57,7 @@ class PostIntity extends Equatable {
         contact: doc['contact'],
         location: doc['location'],
         dateofrequire: doc['dateofrequire'],
-        createdAt: DateTime.parse(doc['createdAt']),
+        createdAt: (doc['createdAt'] as Timestamp).toDate(),
         myuser: MyUser.fromEntity(MyUserEntity.fromDocument(doc['myuser'])));
   }
 

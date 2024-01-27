@@ -3,8 +3,8 @@ import 'dart:developer';
 import 'package:blood_app/Features/Login/Bloc/sign_in_bloc/sign_in_bloc.dart';
 import 'package:blood_app/Features/Login/model/models.dart';
 import 'package:blood_app/Features/Login/model/models.dart';
+import 'package:blood_app/Features/Request_blood/Get_Post_Bloc/get_post_bloc.dart';
 import 'package:blood_app/Features/Request_blood/Screens/request_blood_page.dart';
-import 'package:blood_app/Features/Request_blood/bloc/request_blood_bloc.dart';
 import 'package:blood_app/Features/Request_blood/blood_request_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,6 +14,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'Features/Login/Bloc/authentication_bloc/authentication_bloc.dart';
 import 'Features/Login/Bloc/my_user_bloc/my_user_bloc.dart';
 import 'Features/Login/firebase_user_repo.dart';
+import 'Features/Request_blood/Request_blood_bloc/request_blood_bloc.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -33,43 +34,43 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => MyUserBloc(userRepositiory: FirebaseUserRepo()),
-      //..add(const GetMyUser(myUserId: '11')),
+    return GestureDetector(
       child: Scaffold(
-// floatingActionButton: FloatingActionButton(
-//   onPressed: () {
-//     if (state.status == MyUserStatus.success) {
-//       print('My User state success');
-//       Navigator.push(
-//         context,
-//         MaterialPageRoute<void>(
-//           builder: (BuildContext context) =>
-//               BlocProvider<RequestBloodBloc>(
-//             create: (context) => RequestBloodBloc(
-//                 bloodRequestRepository: FirebasePostRepository()),
-//             child: RequestBloodPage(),
-//           ),
-//         ),
-//       );
-//     } else if(state.status==MyUserStatus.failure) {
-//       print('Myuser state failure');
-//       return;
-//     }
-//     else if(state.status==MyUserStatus.loading){
-//       print('loading');
-//       return;}
-//     else{
-//       print('unknown');
-//       return;}
-//   },
-//   child: Icon(Icons.add),
-// ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     if (state.status == MyUserStatus.success) {
+      //       print('My User state success');
+      //       Navigator.push(
+      //         context,
+      //         MaterialPageRoute<void>(
+      //           builder: (BuildContext context) =>
+      //               BlocProvider<RequestBloodBloc>(
+      //             create: (context) => RequestBloodBloc(
+      //                 bloodRequestRepository: FirebasePostRepository()),
+      //             child: RequestBloodPage(),
+      //           ),
+      //         ),
+      //       );
+      //     } else if(state.status==MyUserStatus.failure) {
+      //       print('Myuser state failure');
+      //       return;
+      //     }
+      //     else if(state.status==MyUserStatus.loading){
+      //       print('loading');
+      //       return;}
+      //     else{
+      //       print('unknown');
+      //       return;}
+      //   },
+      //   child: Icon(Icons.add),
+      // ),
         appBar: AppBar(
           backgroundColor: Colors.red,
           title: Text('blood app'),
         ),
-        drawer: BlocConsumer<MyUserBloc, MyUserState>(
+        drawer: BlocProvider(
+      create: (context) => MyUserBloc(userRepositiory: FirebaseUserRepo()),
+      child: BlocConsumer<MyUserBloc, MyUserState>(
           listener: (context, state) {
             //print('Listener block');
             if (state.status == MyUserStatus.success) {
@@ -103,6 +104,7 @@ class _MainPageState extends State<MainPage> {
           },
           builder: (context, state) {
             return Drawer(
+
               backgroundColor: Colors.red,
               width: MediaQuery.of(context).size.width / 1.42,
               child: ListView(
@@ -111,6 +113,8 @@ class _MainPageState extends State<MainPage> {
                     leading: Icon(CupertinoIcons.add),
                     title: Text('Request blood'),
                     onTap: () {
+                      print('***************************************');
+                      print('request button tapped');
                       //if (state.status == MyUserStatus.success) {}
                       context.read<MyUserBloc>().add(GetMyUser(
                           myUserId: context
@@ -118,6 +122,7 @@ class _MainPageState extends State<MainPage> {
                               .state
                               .user!
                               .uid));
+                      Navigator.pop(context);
 
                       // print(context.read<AuthenticationBloc>().state.user);
                     },
@@ -137,7 +142,27 @@ class _MainPageState extends State<MainPage> {
             );
           },
         ),
-        body: Container(),
+    ),
+        body: BlocBuilder<GetPostBloc, GetPostState>(
+          builder: (context, state) {
+            if (state is GetPostSuccess) {
+              return ListView.builder(
+                  itemCount: state.getBlood.length,
+                  itemBuilder: (context, int i) {
+                    return Container(
+                      color: Colors.red,
+                      height: 100,
+                      width: 100,
+                    );
+                  });
+            } else if (state is GetPostFailure) {
+              return const Center(child: Text('Post fetch failure'));
+            } else if (state is GetPostLoading) {
+              return const Center(child: CircularProgressIndicator());
+            } else
+              return Center(child: const Text('no post'));
+          },
+        ),
       ),
     );
   }

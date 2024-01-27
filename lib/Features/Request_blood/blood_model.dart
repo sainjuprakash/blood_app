@@ -25,7 +25,7 @@ class RequestBlood extends Equatable {
       required this.purpose,
       required this.bloodgroup,
       required this.pins,
-        required this.contact,
+      required this.contact,
       required this.location,
       required this.dateofrequire,
       required this.createdAt,
@@ -119,6 +119,17 @@ class RequestBlood extends Equatable {
   }
 
   @override
-  // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [
+        postID,
+        fullname,
+        patientname,
+        purpose,
+        bloodgroup,
+        pins,
+        contact,
+        location,
+        dateofrequire,
+        createdAt,
+        user
+      ];
 }
