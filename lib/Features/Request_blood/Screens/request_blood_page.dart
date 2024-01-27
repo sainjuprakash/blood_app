@@ -81,7 +81,6 @@ class _RequestBloodPageState extends State<RequestBloodPage> {
                         const EdgeInsets.only(top: 100.0, left: 10, right: 10),
                     child: Column(
                       children: [
-
                         const SizedBox(
                           height: 10,
                         ),
@@ -172,10 +171,12 @@ class _RequestBloodPageState extends State<RequestBloodPage> {
                             validator: (contact) {
                               if (contact!.isEmpty) {
                                 return 'Please enter your contact number';
-                              } if(contact.length != 10){
+                              }
+                              if (contact.length != 10) {
                                 return 'enter valid contact number';
                               }
-                              if(!RegExp(r'(^(?:[+0]9)?[0-9]{10,12}$)').hasMatch(contact)){
+                              if (!RegExp(r'(^(?:[+0]9)?[0-9]{10,12}$)')
+                                  .hasMatch(contact)) {
                                 return 'contact is not from nepal';
                               }
                               return null;
@@ -208,7 +209,8 @@ class _RequestBloodPageState extends State<RequestBloodPage> {
                                               _locationController.text;
                                           createdblood.dateofrequire =
                                               _dorController.text;
-                                          createdblood.contact= int.parse(_contactController.text);
+                                          createdblood.contact = int.parse(
+                                              _contactController.text);
                                         });
                                         context.read<RequestBloodBloc>().add(
                                             bloodRequestDone(createdblood));

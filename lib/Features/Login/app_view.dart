@@ -35,19 +35,19 @@ class _MyAppViewState extends State<MyAppView> {
                 BlocProvider(
                   create: (context) => SignInBloc(
                       userRepository:
-                          context.read<AuthenticationBloc>().userRepostitory),
+                      context.read<AuthenticationBloc>().userRepostitory),
                 ),
                 BlocProvider(
                     create: (context) =>
-                        GetPostBloc(postRepository: FirebasePostRepository())
-                          ..add(GetPost())),
+                    GetPostBloc(postRepository: FirebasePostRepository())
+                      ..add(GetPost())),
                 BlocProvider(
-                  create: (context) => MyUserBloc(
-                      userRepositiory:
-                          context.read<AuthenticationBloc>().userRepostitory
-                  )
-                    // ..add(GetMyUser(
-                    //     myUserId: context.read<AuthenticationBloc>().state.user!.uid)),
+                    create: (context) => MyUserBloc(
+                        userRepositiory:
+                        context.read<AuthenticationBloc>().userRepostitory
+                    )
+                  // ..add(GetMyUser(
+                  //     myUserId: context.read<AuthenticationBloc>().state.user!.uid)),
                 ),
               ],
               child: const MainPage(),

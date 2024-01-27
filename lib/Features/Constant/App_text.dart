@@ -23,15 +23,14 @@ class AppTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return Container(height: 50,
-      child: TextField(
-        style: TextStyle(),
-        decoration: InputDecoration(
-          //  labelText: 'enter',
-          hintText:hinttextl,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15),
-          ),
+    return TextField(
+      style: TextStyle(),
+      decoration: InputDecoration(
+        //  labelText: 'enter',
+        hintText:hinttextl,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+
         ),
       ),
     );

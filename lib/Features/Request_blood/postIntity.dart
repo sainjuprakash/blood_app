@@ -58,7 +58,7 @@ class PostIntity extends Equatable {
         location: doc['location'],
         dateofrequire: doc['dateofrequire'],
         createdAt: (doc['createdAt'] as Timestamp).toDate(),
-        myuser: MyUser.fromEntity(MyUserEntity.fromDocument(doc['myuser'])));
+        myuser: MyUser.fromEntity(MyUserEntity.fromDocument(doc['user'])));
   }
 
   @override
