@@ -68,81 +68,78 @@ class _MainPageState extends State<MainPage> {
           backgroundColor: Colors.red,
           title: Text('blood app'),
         ),
-        drawer: BlocProvider(
-      create: (context) => MyUserBloc(userRepositiory: FirebaseUserRepo()),
-      child: BlocConsumer<MyUserBloc, MyUserState>(
-          listener: (context, state) {
-            //print('Listener block');
-            if (state.status == MyUserStatus.success) {
-              Navigator.push(
-                context,
-                MaterialPageRoute<void>(
-                  builder: (BuildContext context) =>
-                      BlocProvider<RequestBloodBloc>(
-                    create: (context) => RequestBloodBloc(
-                        bloodRequestRepository: FirebasePostRepository()),
-                    child: RequestBloodPage(
-                      myUser: state.user!,
+        drawer: BlocConsumer<MyUserBloc, MyUserState>(
+            listener: (context, state) {
+              //print('Listener block');
+              if (state.status == MyUserStatus.success) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute<void>(
+                    builder: (BuildContext context) =>
+                        BlocProvider<RequestBloodBloc>(
+                      create: (context) => RequestBloodBloc(
+                          bloodRequestRepository: FirebasePostRepository()),
+                      child: RequestBloodPage(
+                        myUser: state.user!,
+                      ),
                     ),
                   ),
+                );
+              } else if (state.status == MyUserStatus.failure) {
+                print('Myuser state failure');
+                return;
+              } else if (state.status == MyUserStatus.loading) {
+                print('loading');
+                // context.read<MyUserBloc>().add(GetMyUser(myUserId: 'id1bxMyvBTfQYVi5nLS2tIasUmi1'));
+              } else {
+                return;
+              }
+              // if (state == MyUserState.loading()) {
+              //   context
+              //       .read<MyUserBloc>()
+              //       .add(GetMyUser(myUserId: 'id1bxMyvBTfQYVi5nLS2tIasUmi1'));
+              // }
+            },
+            builder: (context, state) {
+              return Drawer(
+
+                backgroundColor: Colors.red,
+                width: MediaQuery.of(context).size.width / 1.42,
+                child: ListView(
+                  children: [
+                    ListTile(
+                      leading: Icon(CupertinoIcons.add),
+                      title: Text('Request blood'),
+                      onTap: () {
+                        print('***************************************');
+                        print('request button tapped');
+                        //if (state.status == MyUserStatus.success) {}
+                        context.read<MyUserBloc>().add(GetMyUser(
+                            myUserId: context
+                                .read<AuthenticationBloc>()
+                                .state
+                                .user!
+                                .uid));
+                        Navigator.pop(context);
+
+                        // print(context.read<AuthenticationBloc>().state.user);
+                      },
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.login),
+                      title: Text('Log Out'),
+                      onTap: () {
+                        context.read<SignInBloc>().add(SignOutRequired());
+                      },
+                    ),
+                  ],
                 ),
               );
-            } else if (state.status == MyUserStatus.failure) {
-              print('Myuser state failure');
-              return;
-            } else if (state.status == MyUserStatus.loading) {
-              print('loading');
-              // context.read<MyUserBloc>().add(GetMyUser(myUserId: 'id1bxMyvBTfQYVi5nLS2tIasUmi1'));
-            } else {
-              return;
-            }
-            // if (state == MyUserState.loading()) {
-            //   context
-            //       .read<MyUserBloc>()
-            //       .add(GetMyUser(myUserId: 'id1bxMyvBTfQYVi5nLS2tIasUmi1'));
-            // }
-          },
-          builder: (context, state) {
-            return Drawer(
-
-              backgroundColor: Colors.red,
-              width: MediaQuery.of(context).size.width / 1.42,
-              child: ListView(
-                children: [
-                  ListTile(
-                    leading: Icon(CupertinoIcons.add),
-                    title: Text('Request blood'),
-                    onTap: () {
-                      print('***************************************');
-                      print('request button tapped');
-                      //if (state.status == MyUserStatus.success) {}
-                      context.read<MyUserBloc>().add(GetMyUser(
-                          myUserId: context
-                              .read<AuthenticationBloc>()
-                              .state
-                              .user!
-                              .uid));
-                      Navigator.pop(context);
-
-                      // print(context.read<AuthenticationBloc>().state.user);
-                    },
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.login),
-                    title: Text('Log Out'),
-                    onTap: () {
-                      context.read<SignInBloc>().add(SignOutRequired());
-                    },
-                  ),
-                ],
-              ),
-            );
-          },
-        ),
-    ),
+            },
+          ),
         body: BlocBuilder<GetPostBloc, GetPostState>(
           builder: (context, state) {
             if (state is GetPostSuccess) {
